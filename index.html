@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIRA — QR Landing</title>
+<meta name="description" content="AIRA | Cyber humanoid virtual idol. Remember Tomorrow.">
+<meta property="og:title" content="AIRA — Remember Tomorrow">
+<meta property="og:description" content="Scan & connect with AIRA: MV, socials, events, contact.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://yourcdn/aira/og.jpg">
+<meta name="theme-color" content="#0d0f14">
+<style>
+:root{--bg:#0b0e12;--fg:#e7ecf3;--muted:#9aa6b2;--acc:#57b7ff;}
+*{box-sizing:border-box}html,body{height:100%}body{
+margin:0;background:radial-gradient(1200px 600px at 80% -10%,#142033 0%,#0b0e12 55%,#07090c 100%);
+color:var(--fg);font:16px/1.55 system-ui,Segoe UI,Apple SD Gothic Neo,Roboto,Arial}
+.container{max-width:960px;margin:0 auto;padding:20px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+backdrop-filter: blur(8px); border-radius:20px; padding:20px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+@media(max-width:840px){.hero{grid-template-columns:1fr}}
+h1{font-size:clamp(28px,4vw,44px);margin:0 0 6px}
+h2{font-size:20px;margin:16px 0 6px}
+p{margin:8px 0;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+a.btn,button.btn{appearance:none;border:1px solid rgba(255,255,255,.18);color:var(--fg);
+text-decoration:none;border-radius:12px;padding:12px 14px;display:inline-flex;gap:8px;
+align-items:center;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02))}
+a.btn.primary{border-color:rgba(87,183,255,.5);box-shadow:0 0 24px rgba(87,183,255,.18)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.badge{font-size:12px;color:#b8c4cf;border:1px solid rgba(255,255,255,.12);
+padding:4px 8px;border-radius:999px;display:inline-block}
+.footer{opacity:.7;margin:18px 0 8px;text-align:center;font-size:12px}
+img.heroimg{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);object-fit:cover}
+.small{font-size:13px;color:var(--muted)}
+</style>
+<script>
+const $ = s=>document.querySelector(s);
+const params = new URLSearchParams(location.search);
+const campaign = params.get('c')||'default';
+const ref = params.get('ref')||'qr';
+const lang = (params.get('lang')||navigator.language.slice(0,2)||'en').toLowerCase();
+
+const i18n = {
+  ko:{
+    title:"AIRA — 리멤버 투머로우",
+    lead:"사이버 휴머노이드 버추얼 아이돌 AIRA. QR로 만나는 즉시 연결 허브.",
+    watchMV:"뮤비 보기", follow:"팔로우", contact:"연락처 저장", events:"공연/이벤트",
+    about:"AIRA는 일본 펑크락 감성의 사이버 휴머노이드. ‘Remember Tomorrow’로 시간을 거꾸로 달리는 기억을 노래합니다.",
+    thanks:"이 QR은 캠페인 <span id='c'></span> · 매체 <span id='r'></span> 로 스캔됨"
+  },
+  en:{
+    title:"AIRA — Remember Tomorrow",
+    lead:"Cyber humanoid virtual idol. This QR hub connects you instantly.",
+    watchMV:"Watch MV", follow:"Follow", contact:"Save Contact", events:"Events",
+    about:"AIRA blends Japanese punk-rock energy with cybernetic aesthetics. ‘Remember Tomorrow’ bends time and memory.",
+    thanks:"Scanned via campaign <span id='c'></span> · ref <span id='r'></span>"
+  }
+};
+function t(k){return (i18n[lang]||i18n.en)[k]}
+document.addEventListener('DOMContentLoaded',()=>{
+  $('#title').textContent=t('title');
+  $('#lead').textContent=t('lead');
+  $('#about').textContent=t('about');
+  $('#watchMV').textContent=t('watchMV');
+  $('#follow').textContent=t('follow');
+  $('#contact').textContent=t('contact');
+  $('#events').textContent=t('events');
+  $('#thanks').innerHTML=t('thanks');
+  $('#c').textContent = campaign; $('#r').textContent = ref;
+
+  // vCard 동적 생성
+  const vcf = [
+    "BEGIN:VCARD","VERSION:3.0",
+    "N:AIRA;Virtual Idol;;;","FN:AIRA",
+    "ORG:AIRA Project",
+    "TITLE:Cyber Humanoid Artist",
+    "URL:https://aira.world",
+    "EMAIL:contact@aira.world",
+    "TEL;TYPE=work:+82-10-0000-0000",
+    "END:VCARD"].join("\n");
+  const blob = new Blob([vcf],{type:"text/vcard"});
+  $('#vcf').href = URL.createObjectURL(blob);
+  // 간단 트래킹(필요시 GA4로 대체)
+  console.log("QR_SCAN",{campaign,ref,lang});
+});
+</script>
+</head>
+<body>
+  <div class="container">
+    <div class="card hero">
+      <div>
+        <span class="badge">AIRA · Cyber Humanoid</span>
+        <h1 id="title">AIRA — Remember Tomorrow</h1>
+        <p id="lead">Cyber humanoid virtual idol. This QR hub connects you instantly.</p>
+        <div class="btns">
+          <a id="watchMV" class="btn primary" href="https://youtube.com/@AI-HanB" target="_blank" rel="noopener">Watch MV</a>
+          <a id="follow" class="btn" href="https://instagram.com/your_aira" target="_blank" rel="noopener">Follow</a>
+          <a id="events" class="btn" href="https://aira.world/events" target="_blank" rel="noopener">Events</a>
+          <a id="contact" class="btn" id="save" href="#" onclick="document.getElementById('vcf').click();return false;">Save Contact</a>
+          <a id="vcf" style="display:none" download="AIRA.vcf"></a>
+        </div>
+        <p class="small" id="about">About…</p>
+        <p class="small" id="thanks"></p>
+      </div>
+      <div>
+        <!-- 레퍼런스 전신/반신 이미지 교체 -->
+        <img class="heroimg" src="https://yourcdn/aira/standee.jpg" alt="AIRA humanoid">
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="card">
+        <h2>Links</h2>
+        <p class="small">Spotify · Apple Music · YouTube Music</p>
+        <div class="btns">
+          <a class="btn" href="https://open.spotify.com/artist/your-aira" target="_blank">Spotify</a>
+          <a class="btn" href="https://music.youtube.com/channel/your-aira" target="_blank">YTM</a>
+          <a class="btn" href="https://music.apple.com/your-aira" target="_blank">Apple Music</a>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Latest</h2>
+        <p class="small">“Remember Tomorrow” MV / Behind / Merch</p>
+        <div class="btns">
+          <a class="btn" href="https://aira.world/merch" target="_blank">Merch</a>
+          <a class="btn" href="https://aira.world/behind" target="_blank">Behind</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">© AIRA Project. All rights reserved.</p>
+  </div>
+</body>
+</html>
