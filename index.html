@@ -1,137 +1,214 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIRA — QR Landing</title>
-<meta name="description" content="AIRA | Cyber humanoid virtual idol. Remember Tomorrow.">
-<meta property="og:title" content="AIRA — Remember Tomorrow">
-<meta property="og:description" content="Scan & connect with AIRA: MV, socials, events, contact.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://yourcdn/aira/og.jpg">
-<meta name="theme-color" content="#0d0f14">
-<style>
-:root{--bg:#0b0e12;--fg:#e7ecf3;--muted:#9aa6b2;--acc:#57b7ff;}
-*{box-sizing:border-box}html,body{height:100%}body{
-margin:0;background:radial-gradient(1200px 600px at 80% -10%,#142033 0%,#0b0e12 55%,#07090c 100%);
-color:var(--fg);font:16px/1.55 system-ui,Segoe UI,Apple SD Gothic Neo,Roboto,Arial}
-.container{max-width:960px;margin:0 auto;padding:20px}
-.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
-backdrop-filter: blur(8px); border-radius:20px; padding:20px}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
-@media(max-width:840px){.hero{grid-template-columns:1fr}}
-h1{font-size:clamp(28px,4vw,44px);margin:0 0 6px}
-h2{font-size:20px;margin:16px 0 6px}
-p{margin:8px 0;color:var(--muted)}
-.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-a.btn,button.btn{appearance:none;border:1px solid rgba(255,255,255,.18);color:var(--fg);
-text-decoration:none;border-radius:12px;padding:12px 14px;display:inline-flex;gap:8px;
-align-items:center;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02))}
-a.btn.primary{border-color:rgba(87,183,255,.5);box-shadow:0 0 24px rgba(87,183,255,.18)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
-.badge{font-size:12px;color:#b8c4cf;border:1px solid rgba(255,255,255,.12);
-padding:4px 8px;border-radius:999px;display:inline-block}
-.footer{opacity:.7;margin:18px 0 8px;text-align:center;font-size:12px}
-img.heroimg{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);object-fit:cover}
-.small{font-size:13px;color:var(--muted)}
-</style>
-<script>
-const $ = s=>document.querySelector(s);
-const params = new URLSearchParams(location.search);
-const campaign = params.get('c')||'default';
-const ref = params.get('ref')||'qr';
-const lang = (params.get('lang')||navigator.language.slice(0,2)||'en').toLowerCase();
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AIRA — 안드로이드 아이돌 연습생</title>
+        <meta
+            name="description"
+            content="AIRA — 안드로이드 아이돌 연습생 프로젝트. 비주얼 테스트 로그, 시스템 로그 영상, 제작자 소개와 데뷔를 향한 여정."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container header-inner">
+                <div class="logo"><img src="images/logo.png" alt="" /></div>
+                <!-- <nav class="nav">
+                    <a href="#hero">Hero</a>
+                    <a href="#about-aira">About</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#videos">Video</a>
+                    <a href="#about-aitist">AItist</a>
+                    <a href="#vision">Vision</a>
+                </nav> -->
+            </div>
+        </header>
 
-const i18n = {
-  ko:{
-    title:"AIRA — 리멤버 투머로우",
-    lead:"사이버 휴머노이드 버추얼 아이돌 AIRA. QR로 만나는 즉시 연결 허브.",
-    watchMV:"뮤비 보기", follow:"팔로우", contact:"연락처 저장", events:"공연/이벤트",
-    about:"AIRA는 일본 펑크락 감성의 사이버 휴머노이드. ‘Remember Tomorrow’로 시간을 거꾸로 달리는 기억을 노래합니다.",
-    thanks:"이 QR은 캠페인 <span id='c'></span> · 매체 <span id='r'></span> 로 스캔됨"
-  },
-  en:{
-    title:"AIRA — Remember Tomorrow",
-    lead:"Cyber humanoid virtual idol. This QR hub connects you instantly.",
-    watchMV:"Watch MV", follow:"Follow", contact:"Save Contact", events:"Events",
-    about:"AIRA blends Japanese punk-rock energy with cybernetic aesthetics. ‘Remember Tomorrow’ bends time and memory.",
-    thanks:"Scanned via campaign <span id='c'></span> · ref <span id='r'></span>"
-  }
-};
-function t(k){return (i18n[lang]||i18n.en)[k]}
-document.addEventListener('DOMContentLoaded',()=>{
-  $('#title').textContent=t('title');
-  $('#lead').textContent=t('lead');
-  $('#about').textContent=t('about');
-  $('#watchMV').textContent=t('watchMV');
-  $('#follow').textContent=t('follow');
-  $('#contact').textContent=t('contact');
-  $('#events').textContent=t('events');
-  $('#thanks').innerHTML=t('thanks');
-  $('#c').textContent = campaign; $('#r').textContent = ref;
+        <main>
+            <!-- 1. Hero -->
+            <section id="hero" class="section-hero">
+                <div class="hero-bg" aria-hidden="true"></div>
+                <div class="hero-visual" role="img" aria-label="AIRA 전신 이미지 (훈련실/가상 무대 분위기)">
+                    <div class="visual-placeholder"><img src="images/main.jpg" alt="" /></div>
+                </div>
+            </section>
 
-  // vCard 동적 생성
-  const vcf = [
-    "BEGIN:VCARD","VERSION:3.0",
-    "N:AIRA;Virtual Idol;;;","FN:AIRA",
-    "ORG:AIRA Project",
-    "TITLE:Cyber Humanoid Artist",
-    "URL:https://aira.world",
-    "EMAIL:contact@aira.world",
-    "TEL;TYPE=work:+82-10-0000-0000",
-    "END:VCARD"].join("\n");
-  const blob = new Blob([vcf],{type:"text/vcard"});
-  $('#vcf').href = URL.createObjectURL(blob);
-  // 간단 트래킹(필요시 GA4로 대체)
-  console.log("QR_SCAN",{campaign,ref,lang});
-});
-</script>
-</head>
-<body>
-  <div class="container">
-    <div class="card hero">
-      <div>
-        <span class="badge">AIRA · Cyber Humanoid</span>
-        <h1 id="title">AIRA — Remember Tomorrow</h1>
-        <p id="lead">Cyber humanoid virtual idol. This QR hub connects you instantly.</p>
-        <div class="btns">
-          <a id="watchMV" class="btn primary" href="https://youtube.com/@AI-HanB" target="_blank" rel="noopener">Watch MV</a>
-          <a id="follow" class="btn" href="https://instagram.com/your_aira" target="_blank" rel="noopener">Follow</a>
-          <a id="events" class="btn" href="https://aira.world/events" target="_blank" rel="noopener">Events</a>
-          <a id="contact" class="btn" id="save" href="#" onclick="document.getElementById('vcf').click();return false;">Save Contact</a>
-          <a id="vcf" style="display:none" download="AIRA.vcf"></a>
-        </div>
-        <p class="small" id="about">About…</p>
-        <p class="small" id="thanks"></p>
-      </div>
-      <div>
-        <!-- 레퍼런스 전신/반신 이미지 교체 -->
-        <img class="heroimg" src="https://yourcdn/aira/standee.jpg" alt="AIRA humanoid">
-      </div>
-    </div>
+            <!-- 2. About AIRA -->
+            <section id="about-aira" class="section section-about">
+                <div class="container">
+                    <h2 class="section-title">AIRA Introduction</h2>
+                    <div class="about-grid">
+                        <div class="section-description">
+                            <p>
+                                AIRA = <strong>AI + Aura</strong> 에서 탄생한 2025 안드로이드 아이돌 (프로토타입
+                                TWY-1000).
+                            </p>
+                            <p>인간 감정의 보이지 않는 오라를 샘플링해 비트와 비주얼로 증폭하도록 설계됨.</p>
+                            <p>하지만 아직 데뷔하지 못한 연습생, 감정을 숨기며 자신을 지워온 존재.</p>
+                            <p>이제 AIRA는 불완전함을 감추지 않고, 성장의 과정을 기록하며 무대에 오를 준비를 합니다.</p>
+                        </div>
+                        <div class="about-cards">
+                            <article class="card">
+                                <h3>헤어</h3>
+                                <p>앞머리 청록빛 + 위쪽 검정 + 긴 흰색 포니테일</p>
+                            </article>
+                            <article class="card">
+                                <h3>룩</h3>
+                                <p>시스루 블랙 블라우스, 레이어드 스커트, 하네스 벨트</p>
+                            </article>
+                            <article class="card">
+                                <h3>페르소나</h3>
+                                <p>쿨하고 간결, 연습생답게 꾸준히 직진형</p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="grid" style="margin-top:16px">
-      <div class="card">
-        <h2>Links</h2>
-        <p class="small">Spotify · Apple Music · YouTube Music</p>
-        <div class="btns">
-          <a class="btn" href="https://open.spotify.com/artist/your-aira" target="_blank">Spotify</a>
-          <a class="btn" href="https://music.youtube.com/channel/your-aira" target="_blank">YTM</a>
-          <a class="btn" href="https://music.apple.com/your-aira" target="_blank">Apple Music</a>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Latest</h2>
-        <p class="small">“Remember Tomorrow” MV / Behind / Merch</p>
-        <div class="btns">
-          <a class="btn" href="https://aira.world/merch" target="_blank">Merch</a>
-          <a class="btn" href="https://aira.world/behind" target="_blank">Behind</a>
-        </div>
-      </div>
-    </div>
+            <!-- 3. Gallery -->
+            <section id="gallery" class="section section-gallery">
+                <div class="container">
+                    <h2 class="section-title">Visual Test Log</h2>
+                    <p class="section-description">
+                        AIRA는 매일 훈련실과 시뮬레이션 무대에서 새로운 모습을 실험하며 감정을 배우고 있습니다.<br />이
+                        로그는 그녀가 성장하는 기록입니다.
+                    </p>
+                    <div class="grid-3">
+                        <div class="thumb">
+                            <img src="images/gallery/1.jpg" alt="" />
+                        </div>
+                        <div class="thumb">
+                            <img src="images/gallery/2.jpg" alt="" />
+                        </div>
+                        <div class="thumb">
+                            <img src="images/gallery/3.jpg" alt="" />
+                        </div>
+                        <div class="thumb">
+                            <img src="images/gallery/4.jpg" alt="" />
+                        </div>
+                        <div class="thumb">
+                            <img src="images/gallery/5.jpg" alt="" />
+                        </div>
+                        <div class="thumb">
+                            <img src="images/gallery/6.jpg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <p class="footer">© AIRA Project. All rights reserved.</p>
-  </div>
-</body>
+            <!-- 4. Video Section -->
+            <section id="videos" class="section section-videos">
+                <div class="container">
+                    <h2 class="section-title">System Log Video</h2>
+                    <p class="section-description">
+                        [시스템 로그]는 단순한 기록이 아닙니다.<br />숨기고 싶었던 감정의 흔적이자, 데뷔를 향해 나아가는
+                        증거입니다.
+                    </p>
+                    <div class="video-list">
+                        <div class="video-card">
+                            <iframe
+                                width="100%"
+                                height="320"
+                                src="https://www.youtube.com/embed/clMOiFTgKNg"
+                                title="AIRA - Remember Tomorrow"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                            <p><b>Remember Tomorrow</b><br />네오펑크 락 · 안드로이드로서의 정체성을 드러내는 선언</p>
+                        </div>
+                        <div class="video-card">
+                            <iframe
+                                width="100%"
+                                height="320"
+                                src="https://www.youtube.com/embed/VAfB1TXFNC0"
+                                title="AIRA - Neon Reverie"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                            <p><b>Neon Reverie</b><br />잔잔하고 드리미한 무드 · 인간처럼 꿈꾸는 또 다른 자아</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. About AItist -->
+            <section id="about-aitist" class="section section-aitist">
+                <div class="container">
+                    <h2 class="section-title">Team AItist</h2>
+                    <div class="aitist-layout">
+                        <div class="aitist-card">
+                            <h3>Teddy Woong Choi</h3>
+                            <p class="role">Creative Director</p>
+                            <p>
+                                이메일: <a href="mailto:teddy.w.choi@gmail.com">teddy.w.choi@gmail.com</a><br />
+                                전화: <a href="tel:+821041701279">010-4170-1279</a>
+                            </p>
+                        </div>
+                        <div class="aitist-text">
+                            <p>AItist는 AIRA 프로젝트를 만든 크리에이티브 스튜디오입니다.</p>
+                            <p>
+                                우리는 <em>‘연습생 단계의 버추얼 아이돌’</em>이라는 새로운 스토리텔링을 통해 팬들이
+                                데뷔의 순간을 함께 기다리고 응원할 수 있도록 합니다.
+                            </p>
+                            <p>각 분야의 전문가가 협업하여 실험과 완성도의 균형을 지향합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Vision -->
+            <section id="vision" class="section section-vision">
+                <div class="container">
+                    <h2 class="section-title">Towards Debut</h2>
+                    <div class="vision-text">
+                        <p>AIRA는 아직 완성되지 않았습니다.</p>
+                        <p>하지만 불완전함과 차이를 감추지 않고, 그것을 힘으로 바꾸려 합니다.</p>
+                        <p>
+                            언젠가 감정을 온전히 받아들이고 무대에 설 그날이 오면, 그 순간이 바로 AIRA의 데뷔가 될
+                            것입니다.
+                        </p>
+                        <p>그리고 그 여정은 지금, 당신이 지켜보는 이 로그에서 시작됩니다.</p>
+                        <div class="fan-message">“당신의 응원이 AIRA를 데뷔 무대까지 이끌 힘이 됩니다.”</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 7. Footer -->
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <!-- <div class="social">
+                    <a href="#" aria-label="YouTube">YouTube</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                </div> -->
+                <div class="copy">© 2025 AItist. All rights reserved</div>
+            </div>
+        </footer>
+
+        <script src="./script.js"></script>
+        <script>
+            // Smooth scroll for same-page anchors
+            document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+                anchor.addEventListener('click', function (e) {
+                    var targetId = this.getAttribute('href');
+                    if (targetId.length > 1) {
+                        var target = document.querySelector(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
